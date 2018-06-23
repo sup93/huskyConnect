@@ -1,7 +1,12 @@
 import React from 'react';
 import { View } from 'react-native';
 
-const CardSection = (props) => {
+type Props = {
+    children: any,
+    style?: Object
+}
+
+const CardSection = (props: Props) => {
     return (
         <View style={[styles.containerStyle, props.style]}>
             {props.children}

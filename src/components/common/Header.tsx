@@ -18,13 +18,17 @@ import { Text, View } from 'react-native';
 
 // const Header = headerHelper;
 
-const Header = (props) => {
-    const { textStyle, viewStyle } = styles;
+type Props = {
+    headerText: string
+}
+
+const Header = ({ headerText }: Props) => {
+    const { textSytle, viewStyle } = styles;
     // const textStyle = styles.textStyle;
     // const viewStyle = styles.viewStyle;
     return (
         <View style={viewStyle}>
-            <Text style={textStyle}>{props.headerText}</Text>;
+            <Text style={textSytle}>{headerText}</Text>;
         </View>
     );
 };

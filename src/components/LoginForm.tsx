@@ -4,12 +4,23 @@ import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
-class LoginForm extends Component {
-    onEmailChange(text) {
+type Props = {
+    emailChanged: (text: string) => void,
+    passwordChanged: (text: string) => void,
+    //could be {} inside loginUser
+    loginUser: (any: any) => void,
+    loading: () => void,
+    email: string,
+    password: string,
+    error: string
+}
+
+class LoginForm extends Component<Props, undefined> {
+    onEmailChange(text: string) {
         this.props.emailChanged(text);
     }
 
-    onPasswordChange(text) {
+    onPasswordChange(text: string) {
         this.props.passwordChanged(text);
     }
 
@@ -29,7 +40,7 @@ class LoginForm extends Component {
         );
     }
 
-    render() {
+    render(){
         return (
             <Card>
                 <CardSection>
@@ -72,7 +83,11 @@ const styles = {
     }
 }
 
-const mapStateToProps = ({ auth }) => {
+type State = {
+    auth: any
+}
+
+const mapStateToProps = ({ auth }: State) => {
     const { email, password, error, loading } = auth;
 
     return { email, password, error, loading };
