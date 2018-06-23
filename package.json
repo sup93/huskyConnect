@@ -8,12 +8,16 @@
     "ios-max": "react-native run-ios --simulator 'iPhone X'"
   },
   "dependencies": {
+    "@types/react-redux": "^6.0.2",
     "firebase": "^5.1.0",
+    "mobx": "^5.0.3",
+    "mobx-react": "^5.2.3",
     "node": "^10.5.0",
-    "react": "^16.3.1",
+    "react": "^16.4.1",
     "react-native": "^0.55.4",
     "react-native-router-flux": "^4.0.0-beta.32",
     "react-redux": "^5.0.7",
+    "redux-thunk": "^2.3.0",
     "watchman": "^1.0.0"
   },
   "devDependencies": {

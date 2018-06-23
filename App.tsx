@@ -5,20 +5,18 @@
  */
 
 import firebase from 'firebase';
+import ReduxThunk from 'redux-thunk';
+import reducers from './src/reducers';
 import React from 'react'; 
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 import { Component } from 'react';
 import {
   Platform,
   StyleSheet,
-  Text,
-  View
+  Text
 } from 'react-native';
-
-const instructions = Platform.select({
-  ios: `hello it's sue`,
-  android: 'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+import Router from './Router';
 
 type Props = {};
 export default class App extends Component<Props> {
@@ -35,18 +33,11 @@ export default class App extends Component<Props> {
   }
   
   render() {
+    const store= createStore(reducers, {}, applyMiddleware(ReduxThunk))
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
+      <Provider store={store}>
+        <Router />
+      </Provider>
     );
   }
 }

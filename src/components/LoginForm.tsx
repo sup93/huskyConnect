@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
@@ -15,7 +15,7 @@ type Props = {
     error: string
 }
 
-class LoginForm extends Component<Props, undefined> {
+class LoginForm extends Component<Props> {
     onEmailChange(text: string) {
         this.props.emailChanged(text);
     }
@@ -75,19 +75,20 @@ class LoginForm extends Component<Props, undefined> {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     errorTextStyle: {
         fontSize: 20,
         alignSelf: 'center',
         color: 'red'
     }
-}
+})
 
 type State = {
     auth: any
 }
 
 const mapStateToProps = ({ auth }: State) => {
+    console.log(auth);
     const { email, password, error, loading } = auth;
 
     return { email, password, error, loading };
@@ -95,4 +96,4 @@ const mapStateToProps = ({ auth }: State) => {
 
 export default connect(mapStateToProps, {
     emailChanged, passwordChanged, loginUser 
-})(LoginForm);
+})(LoginForm as any);
