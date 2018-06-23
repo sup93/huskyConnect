@@ -97,6 +97,10 @@ build/
 local.properties
 *.iml
 
+# Jest
+#
+.jest/
+
 # node.js
 #
 node_modules/
