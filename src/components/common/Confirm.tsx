@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Modal } from 'react-native';
+import { Text, View, Modal, StyleSheet } from 'react-native';
 import { CardSection } from './CardSection';
 import { Button } from './Button';
 
@@ -10,9 +10,7 @@ type Props = {
     onDecline?: () => void
 }
 
-const Confirm = ({ children, visible, onAccept, onDecline }: Props) => {
-    const { containerStyle, textStyle, cardSectionStyle } = styles;
-    
+const Confirm = ({ children, visible, onAccept, onDecline }: Props) => {    
     return (
         <Modal
             visible={visible}
@@ -20,10 +18,10 @@ const Confirm = ({ children, visible, onAccept, onDecline }: Props) => {
             animationType="slide"
             onRequestClose={() => {}}
         >
-            <View style={containerStyle}>
-                <CardSection style={cardSectionStyle}>
+            <View style={styles.containerStyle}>
+                <CardSection style={styles.cardSectionStyle}>
                     {/* question */}
-                    <Text style={textStyle}>
+                    <Text style={styles.textStyle}>
                         {children}
                     </Text>
                 </CardSection>
@@ -37,7 +35,7 @@ const Confirm = ({ children, visible, onAccept, onDecline }: Props) => {
     );
 };
 
-const styles = {
+let styles =  StyleSheet.create({
     cardSectionStyle: {
         justifyContent: 'center'
     },
@@ -53,6 +51,6 @@ const styles = {
         flex: 1,
         justifyContent: 'center'
     }
-};
+})
 
 export { Confirm };

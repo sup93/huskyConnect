@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 
 type Props = {
     onPress?: () => void,
@@ -10,15 +10,15 @@ const Button = ({ onPress, children }: Props) => { //props .. { onPress } = prop
     const { buttonStyle, textStyle } = styles;
 
     return (
-        <TouchableOpacity onPress={onPress} style={buttonStyle}>
-            <Text style={textStyle}>
+        <TouchableOpacity onPress={onPress} style={styles.buttonStyle}>
+            <Text style={styles.textStyle}>
                 {children}
             </Text>
         </TouchableOpacity>
     );
 };
 
-const styles = {
+let styles = StyleSheet.create({
     buttonStyle: {
         flex: 1,
         alignSelf: 'stretch',
@@ -37,6 +37,6 @@ const styles = {
         paddingTop: 10,
         paddingBottom: 10
     }
-};
+})
 
 export { Button };

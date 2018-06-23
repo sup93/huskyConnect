@@ -22,7 +22,12 @@ export const passwordChanged = (text: string) => {
     };
 };
 
-export const loginUser = ({ email, password }) => {
+type Login = {
+    email: string,
+    password: string
+}
+
+export const loginUser = ({ email, password }: Login) => {
     return (dispatch) => {
         dispatch({ type: LOGIN_USER });
 

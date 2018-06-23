@@ -3,7 +3,7 @@
 
 // Import libraries for making a component
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 // Make a component
 // function headerHelper(props) {
@@ -23,17 +23,16 @@ type Props = {
 }
 
 const Header = ({ headerText }: Props) => {
-    const { textSytle, viewStyle } = styles;
     // const textStyle = styles.textStyle;
     // const viewStyle = styles.viewStyle;
     return (
-        <View style={viewStyle}>
-            <Text style={textSytle}>{headerText}</Text>;
+        <View style={styles.viewStyle}>
+            <Text style={styles.textSytle}>{headerText}</Text>;
         </View>
     );
 };
 
-const styles = {
+let styles = StyleSheet.create({
     viewStyle: {
         backgroundColor: '#F8F8F8',
         justifyContent: 'center',
@@ -50,7 +49,7 @@ const styles = {
     textSytle: {
         fontSize: 20
     }
-};
+})
 
 // Make the component available to other parts of the app
 export { Header };
