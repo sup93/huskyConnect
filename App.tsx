@@ -4,6 +4,7 @@
  * @flow
  */
 
+import firebase from 'firebase';
 import React from 'react'; 
 import { Component } from 'react';
 import {
@@ -21,6 +22,18 @@ const instructions = Platform.select({
 
 type Props = {};
 export default class App extends Component<Props> {
+  componentWillMount() {
+    const config = {
+      apiKey: "AIzaSyDXo_jIgNEI7DUBGvEx_AfYqYvBDl4UxJ4",
+      authDomain: "huskyconnect-f1fc2.firebaseapp.com",
+      databaseURL: "https://huskyconnect-f1fc2.firebaseio.com",
+      projectId: "huskyconnect-f1fc2",
+      storageBucket: "huskyconnect-f1fc2.appspot.com",
+      messagingSenderId: "886420119417"
+    };
+    firebase.initializeApp(config);
+  }
+  
   render() {
     return (
       <View style={styles.container}>
