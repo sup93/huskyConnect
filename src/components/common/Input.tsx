@@ -4,7 +4,7 @@ import { TextInput, View, Text, StyleSheet } from 'react-native';
 type Props = {
     label: string,
     value: string,
-    onChangeText?: () => void,
+    onChangeText?: any,
     placeholder: string,
     secureTextEntry?: boolean
 }

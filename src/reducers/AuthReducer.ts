@@ -1,14 +1,14 @@
-
+//Reducer works when state change
 import { 
-    EmailChangedType,
-    PasswordChangedType,
-    LoginUserSuccessType,
-    LoginUserFailType,
-    LoginUserType,
-
+    EMAIL_CHANGED,
+    PASSWORD_CHANGED,
+    LOGIN_USER,
+    LOGIN_USER_SUCCESS,
+    LOGIN_USER_FAIL,
 } from '../actions/husky-actions';
 import { AuthStore } from '../components/common/models/auth-store';
-import { AuthActions } from '../actions';
+import { HuskyActions } from '../actions';
+
 
 const INITIAL_STATE: AuthStore = {
     email: '',
@@ -18,15 +18,16 @@ const INITIAL_STATE: AuthStore = {
     loading: false
 };
 
-export const authReducer = (state = INITIAL_STATE, action: AuthActions) => {
-    // console.log(action);
+
+export default (state = INITIAL_STATE, action: HuskyActions) => {
+    console.log(action);
 
     switch (action.type) {
-        case EmailChangedType:
+        case EMAIL_CHANGED:
             return { ...state, email: action.payload };
-        case PasswordChangedType:
+        case PASSWORD_CHANGED:
             return { ...state, password: action.payload };
-        case LoginUserType:
+        case LOGIN_USER:
             return { ...state, loading: true, error: '' }
         // case LOGIN_USER_SUCCESS:
         //     return { ...state,
@@ -36,9 +37,9 @@ export const authReducer = (state = INITIAL_STATE, action: AuthActions) => {
         //         email: '',
         //         password: ''
         //     };
-        case LoginUserSuccessType:
+        case LOGIN_USER_SUCCESS:
             return { ...state, ...INITIAL_STATE, user: action.payload };
-        case LoginUserFailType:
+        case LOGIN_USER_FAIL:
             return { ...state, error: 'Authentication Failed.', password: '', loading: false }
         default:
             return state;

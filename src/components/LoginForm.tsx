@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { emailChanged, passwordChanged, loginUser } from '../actions';
 import { Card, CardSection, Input, Button, Spinner } from './common';
@@ -9,7 +9,7 @@ type Props = {
     passwordChanged: (text: string) => void,
     //could be {} inside loginUser
     loginUser: (any: any) => void,
-    loading: () => void,
+    loading: boolean,
     email: string,
     password: string,
     error: string

@@ -12,9 +12,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import { Component } from 'react';
 import {
-  Platform,
-  StyleSheet,
-  Text
+  StyleSheet
 } from 'react-native';
 import Router from './Router';
 

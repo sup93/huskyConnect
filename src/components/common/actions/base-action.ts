@@ -1,3 +1,7 @@
+//common actions
+// Every Action should extend BaseAction, which means they all need to have a type.
+
+//parent class. means every child must have type(action) of string
 export interface BaseAction {
     type: string;
 }

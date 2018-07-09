@@ -6,12 +6,13 @@ type Props = {
     children: any
 }
 
+//children is for rendering insdie of button
 const Button = ({ onPress, children }: Props) => { //props .. { onPress } = props.onPress
     const { buttonStyle, textStyle } = styles;
 
     return (
-        <TouchableOpacity onPress={onPress} style={styles.buttonStyle}>
-            <Text style={styles.textStyle}>
+        <TouchableOpacity onPress={onPress} style={buttonStyle}>
+            <Text style={textStyle}>
                 {children}
             </Text>
         </TouchableOpacity>
