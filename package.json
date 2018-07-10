@@ -8,8 +8,10 @@
     "ios-max": "react-native run-ios --simulator 'iPhone X'"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.111",
     "@types/react-redux": "^6.0.2",
     "firebase": "^5.1.0",
+    "lodash": "^4.17.10",
     "mobx": "^5.0.3",
     "mobx-react": "^5.2.3",
     "node": "^10.5.0",

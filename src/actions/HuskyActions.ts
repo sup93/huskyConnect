@@ -7,7 +7,9 @@ import {
     LoginUserSuccessAction,
     PasswordChangedAction,
     ClassUpdateAction,
-    ClassFormSaveAction
+    ClassFormSaveAction,
+    ClassFormSaveSuccessAction,
+    ClassFetchSuccessAction
  } from './husky-actions';
 
 export type HuskyActions = 
@@ -19,4 +21,6 @@ export type HuskyActions =
  PasswordChangedAction |
  // Class Form Actions
  ClassUpdateAction |
- ClassFormSaveAction;
+ ClassFormSaveAction |
+ ClassFormSaveSuccessAction|
+ ClassFetchSuccessAction;

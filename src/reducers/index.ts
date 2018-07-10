@@ -2,8 +2,10 @@
 import { combineReducers } from 'redux';
 import AuthReducer from './AuthReducer';
 import ClassReducer from './ClassReducer';
+import ClassListReducer from './ClassListReducer';
 
 export default combineReducers({
     auth: AuthReducer,
-    classForm: ClassReducer
+    classForm: ClassReducer,
+    classList: ClassListReducer
 });

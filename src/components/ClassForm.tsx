@@ -83,7 +83,7 @@ class ClassForm extends Component<Props> {
                 </CardSection>
                 <CardSection>
                     <Button onPress={this.onButtonPress.bind(this)}>
-                        Save Changes
+                        Add Class
                     </Button>
                 </CardSection>
             </View>

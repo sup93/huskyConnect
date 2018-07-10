@@ -14,6 +14,9 @@ export type LoginUserFailType = 'login_user_fail'
 export type LoginUserType = 'login_user';
 export type ClassUpdateType = 'class_update';
 export type ClassFormSaveType = 'class_form_save';
+export type ClassFormSaveSuccessType = 'class_form_save_success';
+export type ClassFetchType = 'class_fetch';
+export type ClassFetchSuccessType = 'class_fetch_success';
 
 // 2. Define the actions with a type because it's typescript (action type: from the previous 1)
 //only one time exist means cannot use multiple time. unique.
@@ -24,12 +27,34 @@ export const LOGIN_USER_FAIL: LoginUserFailType = 'login_user_fail'
 export const LOGIN_USER: LoginUserType = 'login_user';
 export const CLASS_UPDATE: ClassUpdateType = 'class_update';
 export const CLASS_FORM_SAVE: ClassFormSaveType = 'class_form_save';
+export const CLASS_FORM_SAVE_SUCCESS: ClassFormSaveSuccessType = 'class_form_save_success';
+export const CLASS_FETCH: ClassFetchType = 'class_fetch';
+export const CLASS_FETCH_SUCCESS: ClassFetchSuccessType = 'class_fetch_success';
 
 // 3. For each action, export the interface of the action describing the type and the payload.
 //        - Also extend BaseAction class to ensure your types work.
 // name of action, under type must be match with payload(result, means return value). this fcn is under BaseAction
 // interface means contract between reducer and action. means what the reducer expect from action.
 //export this function so I can use this from the other files
+
+// getting class list. after ClassFetchAction
+export interface ClassFetchSuccessAction extends BaseAction {
+    type: ClassFetchSuccessType,
+    payload: any
+}
+
+// type ClassFetchPayloadType = {
+//     payload: firebase.database.DataSnapshot
+// }
+
+// init call to get a class
+export interface ClassFetchAction extends BaseAction {
+    type: ClassFetchType
+    // payload: ClassFetchPayloadType
+}
+export interface ClassFormSaveSuccessAction extends BaseAction {
+    type: ClassFormSaveSuccessType
+}
 export interface EmailChangedAction extends BaseAction {
     type: EmailChangedType,
     payload: string
@@ -114,21 +139,22 @@ export const loginUser = ({ email, password }: Login) => {
 };
 
 export const classFormSave = ({classcode, classname, profname, time, credits, subject }: ClassStore) => {
+    const { currentUser } = firebase.auth();
+
     return (dispatch: Dispatch) => {
         dispatch({ type: CLASS_FORM_SAVE });
         console.log('Saving the following: ' + classcode + classname + profname + time + credits + subject);
         // TODO: Add code to save to firebase this person's class
 
     // something like the following, probably just change /employees/ to something else
-    //     firebase.database().ref(`/users/${currentUser.uid}/employees/${uid}`)
-    //         .set({ name, phone, shift })
-    //         .then(() => {
-    //             console.log('saved!')
-    //             dispatch({ type: EMPLOYEE_SAVE_SUCCESS });
-    //             //once edit changes, want to go back to emp list
-    //             Actions.pop();
-    //         });
-        Actions.pop();
+        firebase.database().ref(`/users/${currentUser.uid}/class/${classcode}`)
+            .set({ classcode, classname, profname, time, credits, subject })
+            .then(() => {
+                console.log('saved!')
+                dispatch({ type: CLASS_FORM_SAVE_SUCCESS });
+                //once edit changes, want to go back to emp list
+                Actions.pop();
+            });
     }
 };
 
@@ -144,4 +170,25 @@ const loginUserSuccess = (dispatch: Dispatch, user: firebase.auth.UserCredential
     });
 
     Actions.main();
+};
+
+export const classFetch = () => {
+    console.log('in class fetch');
+    const { currentUser } = firebase.auth();
+
+    return (dispatch: Dispatch) => {
+        firebase.database().ref(`/users/${currentUser.uid}/class`)
+            //snapshot is not an actual data, it's obj that describes the data
+            // that we could get access to
+            // .on is watch for any new value or event
+            // snapshot pointed to updated value
+            .on('value', snapshot => {
+                //dispatch means tell someone to do something, start. fetch: get
+                //payload is
+                console.log('in class fetch returnvalue');
+                console.log(snapshot);
+                console.log(snapshot.val());
+                dispatch({ type: CLASS_FETCH_SUCCESS, payload: snapshot.val() })
+            });
+    };
 };
