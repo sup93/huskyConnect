@@ -17,27 +17,27 @@ type Props = {
 }
 
 class ListItem extends Component<Props> {
-    // onRowPress() {
-    //     // this navigation method is called the Employee-create-form
-    //     // will be rendered and it will be given an additional prop of employee
-    //     // we are in the list item now, each list item is called with one employee
-    //     // which is provided as this.prop.employee
-    //     Actions.employeeEdit({ class: this.props.class });
-    // }
+    onRowPress() {
+        // this navigation method is called the Employee-create-form
+        // will be rendered and it will be given an additional prop of employee
+        // we are in the list item now, each list item is called with one employee
+        // which is provided as this.prop.employee
+        Actions.courseBoard({ course: this.props.classObject });
+    }
 
     render() {
-        const { classname } = this.props.classObject;
+        const { classcode, classname } = this.props.classObject;
 
         return (
-            // <TouchableWithoutFeedback onPress={this.onRowPress.bind(this)}>
+            <TouchableWithoutFeedback onPress={this.onRowPress.bind(this)}>
                 <View>
                     <CardSection>
                         <Text style = {styles.titleStyle}>
-                            {classname}
+                            {classcode + ' ' + classname}
                         </Text>
                     </CardSection>
                 </View>
-            // </TouchableWithoutFeedback>
+            </TouchableWithoutFeedback>
         );
     }
 }

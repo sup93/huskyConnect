@@ -17,6 +17,8 @@ export type ClassFormSaveType = 'class_form_save';
 export type ClassFormSaveSuccessType = 'class_form_save_success';
 export type ClassFetchType = 'class_fetch';
 export type ClassFetchSuccessType = 'class_fetch_success';
+export type MessageFetchType = 'message_fetch';
+export type MessageFetchSuccessType = 'message_fetch_success';
 
 // 2. Define the actions with a type because it's typescript (action type: from the previous 1)
 //only one time exist means cannot use multiple time. unique.
@@ -30,12 +32,22 @@ export const CLASS_FORM_SAVE: ClassFormSaveType = 'class_form_save';
 export const CLASS_FORM_SAVE_SUCCESS: ClassFormSaveSuccessType = 'class_form_save_success';
 export const CLASS_FETCH: ClassFetchType = 'class_fetch';
 export const CLASS_FETCH_SUCCESS: ClassFetchSuccessType = 'class_fetch_success';
+export const MESSAGE_FETCH: MessageFetchType = 'message_fetch';
+export const MESSAGE_FETCH_SUCCESS: MessageFetchSuccessType ='message_fetch_success';
 
 // 3. For each action, export the interface of the action describing the type and the payload.
 //        - Also extend BaseAction class to ensure your types work.
 // name of action, under type must be match with payload(result, means return value). this fcn is under BaseAction
 // interface means contract between reducer and action. means what the reducer expect from action.
 //export this function so I can use this from the other files
+
+export interface MessageFetchSuccessAction extends BaseAction {
+    type: MessageFetchSuccessType,
+    payload: any
+}
+export interface MessageFetchAction extends BaseAction {
+    type: MessageFetchType
+}
 
 // getting class list. after ClassFetchAction
 export interface ClassFetchSuccessAction extends BaseAction {
@@ -192,3 +204,23 @@ export const classFetch = () => {
             });
     };
 };
+
+export const messageFetch = () => {
+    const { currentUser } = firebase.auth();
+
+    return (dispatch: Dispatch) => {
+        firebase.database().ref(`/users/${currentUser.uid}/message`)
+            //snapshot is not an actual data, it's obj that describes the data
+            // that we could get access to
+            // .on is watch for any new value or event
+            // snapshot pointed to updated value
+            .on('value', snapshot => {
+                //dispatch means tell someone to do something, start. fetch: get
+                //payload is
+                console.log('in message fetch returnvalue');
+                console.log(snapshot);
+                console.log(snapshot.val());
+                dispatch({ type: MESSAGE_FETCH_SUCCESS, payload: snapshot.val() })
+            });
+    };
+}

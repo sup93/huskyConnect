@@ -7,6 +7,9 @@ import Homepage from './src/components/Homepage';
 import Classes from './src/components/Classes';
 import { TabIcon } from './src/components/common/TabIcon';
 import ClassForm from './src/components/ClassForm';
+import CourseBoard from './src/components/CourseBoard';
+import Messages from './src/components/Messages';
+import NewMessage from './src/components/NewMessage';
 
 const RouterComponent = () => {
     console.log("got here");
@@ -34,16 +37,35 @@ const RouterComponent = () => {
                             onRight={() => Actions.classForm() }
                             rightTitle="Add Class"
                         />
+                        <Scene
+                            key="tmessage"
+                            component={Messages}
+                            title="Messages"
+                            icon={TabIcon}
+                            onRight={() => Actions.newMessage() }
+                            rightTitle="New Message"
+                        />
                     </Tabs>
                     <Scene
                         key = "classForm"
                         component={ClassForm}
                         title="Class Form"
                     />
+                    <Scene
+                        key="courseBoard"
+                        component={CourseBoard}
+                        title="Course Board"
+                    />
+                    <Scene
+                        key="newMessage"
+                        component={NewMessage}
+                        title="New Message"
+                    />
+
                 </Scene>
             </Scene>
         </Router>
     );
-};
+};  
 
 export default RouterComponent;
