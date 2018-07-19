@@ -6,12 +6,13 @@ import {
     LoginUserFailAction,
     LoginUserSuccessAction,
     PasswordChangedAction,
-    ClassUpdateAction,
+    InputUpdateAction,
     ClassFormSaveAction,
     ClassFormSaveSuccessAction,
     ClassFetchSuccessAction,
     MessageFetchAction,
-    MessageFetchSuccessAction
+    MessageFetchSuccessAction,
+    SendMessageAction
  } from './husky-actions';
 
 export type HuskyActions = 
@@ -22,9 +23,10 @@ export type HuskyActions =
  LoginUserSuccessAction |
  PasswordChangedAction |
  // Class Form Actions
- ClassUpdateAction |
+ InputUpdateAction |
  ClassFormSaveAction |
  ClassFormSaveSuccessAction|
  ClassFetchSuccessAction|
  MessageFetchAction|
- MessageFetchSuccessAction;
+ MessageFetchSuccessAction |
+ SendMessageAction;

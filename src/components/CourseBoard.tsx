@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Picker } from 'react-native';
 import { connect } from 'react-redux';
-import { classUpdate, classFormSave } from '../actions';
-import { CardSection, Input, Button } from './common';
 
 type Props = {
     //could be {} inside loginUser

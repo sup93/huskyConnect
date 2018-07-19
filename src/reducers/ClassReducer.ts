@@ -1,6 +1,6 @@
 //Reducer works when state change
 import { 
-    CLASS_UPDATE, CLASS_FORM_SAVE, CLASS_FORM_SAVE_SUCCESS, CLASS_FETCH, CLASS_FETCH_SUCCESS
+    INPUT_UPDATE, CLASS_FORM_SAVE, CLASS_FORM_SAVE_SUCCESS, CLASS_FETCH, CLASS_FETCH_SUCCESS
 } from '../actions/husky-actions';
 import { ClassStore } from '../components/common/models/class-store';
 import { HuskyActions } from '../actions';
@@ -20,7 +20,7 @@ export default (state = INITIAL_STATE, action: HuskyActions) => {
     console.log(action.type);
 
     switch (action.type) {
-        case CLASS_UPDATE:
+        case INPUT_UPDATE:
             return { ...state, [action.payload.prop]: action.payload.value };
         case CLASS_FORM_SAVE:
             // TODO: this should be updated to what we want later

@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { View, Text, Picker } from 'react-native';
 import { connect } from 'react-redux';
-import { classUpdate, classFormSave } from '../actions';
+import { inputUpdate, classFormSave } from '../actions';
 import { CardSection, Input, Button } from './common';
 
 type Props = {
     //could be {} inside loginUser
-    classUpdate: (any: any) => void,
+    inputUpdate: (any: any) => void,
     classFormSave: (any: any) => void,
     classcode: string,
     classname: string,
@@ -29,7 +29,7 @@ class ClassForm extends Component<Props> {
                     <Input
                         label="Class Code"
                         placeholder="TMATH 100"
-                        onChangeText={(value: string) => this.props.classUpdate({ prop: 'classcode', value })}
+                        onChangeText={(value: string) => this.props.inputUpdate({ prop: 'classcode', value })}
                         value={this.props.classcode}
                     />
                 </CardSection>
@@ -38,7 +38,7 @@ class ClassForm extends Component<Props> {
                         label="Class Name"
                         placeholder="Introduction to Math"
                         value={this.props.classname}
-                        onChangeText={(value: string) => this.props.classUpdate({ prop: 'classname', value })}
+                        onChangeText={(value: string) => this.props.inputUpdate({ prop: 'classname', value })}
                     />
                 </CardSection>
                 <CardSection>
@@ -46,7 +46,7 @@ class ClassForm extends Component<Props> {
                         label="Professor Name"
                         placeholder="Sue Park"
                         value={this.props.profname}
-                        onChangeText={(value: string) => this.props.classUpdate({ prop: 'profname', value })}
+                        onChangeText={(value: string) => this.props.inputUpdate({ prop: 'profname', value })}
                     />
                 </CardSection>
                 <CardSection>
@@ -54,7 +54,7 @@ class ClassForm extends Component<Props> {
                         label="Time"
                         placeholder="0235-530"
                         value={this.props.time}
-                        onChangeText={(value: string) => this.props.classUpdate({ prop: 'time', value })}
+                        onChangeText={(value: string) => this.props.inputUpdate({ prop: 'time', value })}
                     />
                 </CardSection>
                 <CardSection>
@@ -62,7 +62,7 @@ class ClassForm extends Component<Props> {
                         label="Credit"
                         placeholder= "5"
                         value={this.props.credits}
-                        onChangeText={(value: string) => this.props.classUpdate({ prop: 'credits', value })}
+                        onChangeText={(value: string) => this.props.inputUpdate({ prop: 'credits', value })}
                     />
                 </CardSection>
                 <CardSection style={{ flexDirection: 'column' }}>
@@ -70,7 +70,7 @@ class ClassForm extends Component<Props> {
                     <Picker
                         // style ={{ flex: 1}}
                         selectedValue={this.props.subject}
-                        onValueChange={value => this.props.classUpdate({ prop: 'subject', value })}
+                        onValueChange={value => this.props.inputUpdate({ prop: 'subject', value })}
                     >
                         <Picker.Item label="Math" value="Math" />
                         <Picker.Item label="Science" value="Science" />
@@ -116,4 +116,4 @@ const mapStateToProps = ({ classForm }: State) => {
     return classForm;
 };
 
-export default connect(mapStateToProps, { classUpdate, classFormSave })(ClassForm as any);
+export default connect(mapStateToProps, { inputUpdate, classFormSave })(ClassForm as any);

@@ -68,7 +68,7 @@ const mapStateToProps = ({ messageList }: State) => {
         return { ...val };
     });
     return { messageList: messages };
-} 
+}
 
 //connect helper
 export default connect(mapStateToProps,{ messageFetch })(Messages as any);

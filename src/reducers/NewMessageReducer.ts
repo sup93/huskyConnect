@@ -1,11 +1,13 @@
 //Reducer works when state change
 import { 
-    MESSAGE_FETCH_SUCCESS, INPUT_UPDATE
+    INPUT_UPDATE, SEND_MESSAGE
 } from '../actions/husky-actions';
 import { HuskyActions } from '../actions';
 
 
 const INITIAL_STATE: any = {
+    email: '',
+    message: ''
 };
 
 export default (state = INITIAL_STATE, action: HuskyActions) => {
@@ -13,8 +15,10 @@ export default (state = INITIAL_STATE, action: HuskyActions) => {
     console.log(action.type);
 
     switch (action.type) {
-        case MESSAGE_FETCH_SUCCESS:
-            return action.payload;
+        case INPUT_UPDATE:
+            return { ...state, [action.payload.prop]: action.payload.value };
+        case SEND_MESSAGE:
+            return state;
         default:
             console.log("in default");
             console.log(state);
