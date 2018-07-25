@@ -8,8 +8,9 @@ import Classes from './src/components/Classes';
 import { TabIcon } from './src/components/common/TabIcon';
 import ClassForm from './src/components/ClassForm';
 import CourseBoard from './src/components/CourseBoard';
-import Messages from './src/components/Messages';
+import Conversations from './src/components/Conversations';
 import NewMessage from './src/components/NewMessage';
+import ConversationThread from './src/components/ConversationThread';
 
 const RouterComponent = () => {
     console.log("got here");
@@ -38,9 +39,9 @@ const RouterComponent = () => {
                             rightTitle="Add Class"
                         />
                         <Scene
-                            key="tmessage"
-                            component={Messages}
-                            title="Messages"
+                            key="tconversations"
+                            component={Conversations}
+                            title="Conversations"
                             icon={TabIcon}
                             onRight={() => Actions.newMessage() }
                             rightTitle="New Message"
@@ -61,7 +62,13 @@ const RouterComponent = () => {
                         component={NewMessage}
                         title="New Message"
                     />
-
+                    <Scene
+                        key="conversationThread"
+                        component={ConversationThread}
+                        title="Conversation"
+                        onLeft={() => Actions.tconversations() }
+                        leftTitle = "Conversations"
+                    />
                 </Scene>
             </Scene>
         </Router>

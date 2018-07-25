@@ -10,9 +10,11 @@ import {
     ClassFormSaveAction,
     ClassFormSaveSuccessAction,
     ClassFetchSuccessAction,
+    ConversationFetchAction,
+    ConversationFetchSuccessAction,
+    SendMessageAction,
     MessageFetchAction,
-    MessageFetchSuccessAction,
-    SendMessageAction
+    MessageFetchSuccessAction
  } from './husky-actions';
 
 export type HuskyActions = 
@@ -27,6 +29,8 @@ export type HuskyActions =
  ClassFormSaveAction |
  ClassFormSaveSuccessAction|
  ClassFetchSuccessAction|
+ ConversationFetchAction|
+ ConversationFetchSuccessAction |
+ SendMessageAction|
  MessageFetchAction|
- MessageFetchSuccessAction |
- SendMessageAction;
+ MessageFetchSuccessAction;

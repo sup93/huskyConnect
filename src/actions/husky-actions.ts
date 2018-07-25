@@ -17,9 +17,11 @@ export type ClassFormSaveType = 'class_form_save';
 export type ClassFormSaveSuccessType = 'class_form_save_success';
 export type ClassFetchType = 'class_fetch';
 export type ClassFetchSuccessType = 'class_fetch_success';
-export type MessageFetchType = 'message_fetch';
-export type MessageFetchSuccessType = 'message_fetch_success';
+export type ConversationFetchType = 'conversation_fetch';
+export type ConversationFetchSuccessType = 'conversation_fetch_success';
 export type SendMessageType = 'send_message';
+export type MessagesFetchType = 'messages_fetch';
+export type MessagesFetchSuccessType = 'messages_fetch_success';
 
 // 2. Define the actions with a type because it's typescript (action type: from the previous 1)
 //only one time exist means cannot use multiple time. unique.
@@ -33,9 +35,11 @@ export const CLASS_FORM_SAVE: ClassFormSaveType = 'class_form_save';
 export const CLASS_FORM_SAVE_SUCCESS: ClassFormSaveSuccessType = 'class_form_save_success';
 export const CLASS_FETCH: ClassFetchType = 'class_fetch';
 export const CLASS_FETCH_SUCCESS: ClassFetchSuccessType = 'class_fetch_success';
-export const MESSAGE_FETCH: MessageFetchType = 'message_fetch';
-export const MESSAGE_FETCH_SUCCESS: MessageFetchSuccessType = 'message_fetch_success';
+export const CONVERSATION_FETCH: ConversationFetchType = 'conversation_fetch';
+export const CONVERSATION_FETCH_SUCCESS: ConversationFetchSuccessType = 'conversation_fetch_success';
 export const SEND_MESSAGE: SendMessageType = 'send_message';
+export const MESSAGES_FETCH: MessagesFetchType = 'messages_fetch';
+export const MESSAGES_FETCH_SUCCESS: MessagesFetchSuccessType = 'messages_fetch_success';
 
 // 3. For each action, export the interface of the action describing the type and the payload.
 //        - Also extend BaseAction class to ensure your types work.
@@ -43,16 +47,24 @@ export const SEND_MESSAGE: SendMessageType = 'send_message';
 // interface means contract between reducer and action. means what the reducer expect from action.
 //export this function so I can use this from the other files
 
+export interface MessageFetchAction extends BaseAction {
+    type: MessagesFetchType
+}
+
+export interface MessageFetchSuccessAction extends BaseAction {
+    type: MessagesFetchSuccessType,
+    payload: any
+}
 export interface SendMessageAction extends BaseAction {
     type: SendMessageType
 }
 
-export interface MessageFetchSuccessAction extends BaseAction {
-    type: MessageFetchSuccessType,
+export interface ConversationFetchSuccessAction extends BaseAction {
+    type: ConversationFetchSuccessType,
     payload: any
 }
-export interface MessageFetchAction extends BaseAction {
-    type: MessageFetchType
+export interface ConversationFetchAction extends BaseAction {
+    type: ConversationFetchType
 }
 
 // getting class list. after ClassFetchAction
@@ -185,6 +197,20 @@ const loginUserSuccess = (dispatch: Dispatch, user: firebase.auth.UserCredential
     console.log("nothing");
 };
 
+export const messagesFetch = (conversationId: string) => {
+    console.log('message fetch');
+    return (dispatch: Dispatch) => {
+        firebase.database().ref(`/conversations/${conversationId}/messages`)
+            .on('value', snapshot => {
+                // @ts-ignore
+                console.log(snapshot.val())
+                // @ts-ignore
+                dispatch({ type: MESSAGES_FETCH_SUCCESS, payload: snapshot.val() })
+            });
+    };
+};
+
+// @ts-ignore <- tells typescript ignors error or warning the next line.
 export const classFetch = () => {
     console.log('in class fetch');
     const { currentUser } = firebase.auth();
@@ -230,12 +256,13 @@ export const classFormSave = ({classcode, classname, profname, time, credits, su
     }
 };
 
-export const messageFetch = () => {
+export const conversationFetch = () => {
     const { currentUser } = firebase.auth();
+    console.log('261')
 
     return (dispatch: Dispatch) => {
         // @ts-ignore
-        firebase.database().ref(`/users/${currentUser.uid}/message`)
+        firebase.database().ref(`/users/${currentUser.uid}/conversations`)
             //snapshot is not an actual data, it's obj that describes the data
             // that we could get access to
             // .on is watch for any new value or event
@@ -248,22 +275,103 @@ export const messageFetch = () => {
                 // @ts-ignore
                 console.log(snapshot.val());
                 // @ts-ignore
-                dispatch({ type: MESSAGE_FETCH_SUCCESS, payload: snapshot.val() })
+                dispatch({ type: CONVERSATION_FETCH_SUCCESS, payload: snapshot.val() })
             });
     };
 }
 
-export const sendMessage = ({ email, message}: any) => {
+// 2. after user clicked sendMessage, code comes here
+//    this will store data in firebase
+export const sendMessage = ({ conversationId, message }: any) => {
+    const { currentUser } = firebase.auth();
+    console.log("in send msg action");
+    console.log(conversationId, message);
+    return (dispatch: Dispatch) => {
+        const ref = firebase.database().ref(`/conversations/${conversationId}/participants`);
+        let lastMsgId = 0;
+        console.log("292");
+        ref.once('value', function(snapshot) {
+            const participants = snapshot.val();
+
+            console.log("participants");
+            console.log(participants);
+            participants.forEach((p: string, idx: number) => {
+                console.log("SAVING FOR REF");
+                const chatReceiverRef = firebase.database().ref(`/users/${p}/conversations/${conversationId}`);
+                chatReceiverRef.once('value', function(chatsnapshot) {
+                    const data = chatsnapshot.val();
+                    lastMsgId = ++data.lastMsgId;
+                    data.lastMessage = message;
+                    chatReceiverRef.set(data)
+
+                    if (idx == participants.length - 1) {
+                        console.log("saving and dispatch");
+                        // 3. after storing data in firebase, it will call the SEND_MESSAGE reducer to update the state 
+                        // with the message we just sent
+                        // @ts-ignore
+                        var messagesRef = firebase.database().ref(`/conversations/${conversationId}/messages`);
+                        var newMessageChild = messagesRef.push();
+                        const now = new Date();
+                        // @ts-ignore
+                        newMessageChild.set({messageId: lastMsgId, time: now, sender: currentUser.email, message: message });
+                        // @ts-ignore
+                        dispatch({ type: SEND_MESSAGE });
+                    }
+                });
+            });
+        });
+    }
+}
+
+export const sendNewMessage = ({ email, message}: any) => {
     const { currentUser } = firebase.auth();
     return (dispatch: Dispatch) => {
         dispatch({ type: SEND_MESSAGE });
-        const ref = firebase.database().ref(`/emails/${email.split('.')[0]}`)
-        ref.on('value', function(snapshot) {
+        const ref = firebase.database().ref(`/emails/${email.split('.')[0]}`);
+        ref.once('value', function(snapshot) {
             // @ts-ignore
             if (snapshot.exists()) {
-                firebase.database().ref(`/conversations/${1}`)
+                const receiverInfo = snapshot.val().uid;
+                console.log("receiver info");
+                console.log(receiverInfo);
+                // @ts-ignore
+                const ids = [currentUser.uid, receiverInfo].sort()
+                const chatId = ids[0].substring(0,5)+ ids[1].substring(0,5)
+                // @ts-ignore
+                const chatSenderRef = firebase.database().ref(`/users/${currentUser.uid}/conversations/${chatId}`);
+                const chatReceiverRef = firebase.database().ref(`/users/${receiverInfo}/conversations/${chatId}`);
+                let lastMsgId = 0;
+                chatSenderRef.once('value', function(chatsnapshot) {
+                    if (chatsnapshot.exists()) {
+                        console.log("chat exists");
+                        const data = chatsnapshot.val();
+                        lastMsgId = ++data.lastMsgId;
+                        data.lastMessage = message;
+                        chatSenderRef.set(data);
+                        chatReceiverRef.set(data)
+                        // Chat existed so just append
+                    } else {
+                        console.log("re-create chat");
+                        chatSenderRef.set({conversationId: chatId, users: email, lastMsgId: 0, lastMessage: message});
+                        // @ts-ignore
+                        chatReceiverRef.set({conversationId: chatId, user: currentUser.email, lastMsgId:0, lastMessage: message})
+                        // Chat did not exist yet, so need to create it
+                        
+                    }
+                    var cRef = firebase.database().ref(`/conversations/${chatId}/participants`);
                     // @ts-ignore
-                    .set({messageId: 0, time: new Date(), sender: currentUser.email, message: message })
+                    cRef.once('value', function(snap) {
+                        if (!snap.exists()) {
+                            //@ts-ignore
+                            cRef.set([currentUser.uid, receiverInfo])
+                        }
+                    });
+                    var messagesRef = firebase.database().ref(`/conversations/${chatId}/messages`);
+                    var newMessageChild = messagesRef.push();
+                    // @ts-ignore
+                    newMessageChild.set({messageId: lastMsgId, time: new Date(), sender: currentUser.email, message: message })
+                    Actions.conversationThread({ conversationId: chatId });
+                });
             } else {
                 alert("not exist")
             }

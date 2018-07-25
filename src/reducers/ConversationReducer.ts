@@ -1,6 +1,6 @@
 //Reducer works when state change
 import { 
-    MESSAGE_FETCH_SUCCESS, INPUT_UPDATE
+    CONVERSATION_FETCH_SUCCESS
 } from '../actions/husky-actions';
 import { HuskyActions } from '../actions';
 
@@ -13,7 +13,7 @@ export default (state = INITIAL_STATE, action: HuskyActions) => {
     console.log(action.type);
 
     switch (action.type) {
-        case MESSAGE_FETCH_SUCCESS:
+        case CONVERSATION_FETCH_SUCCESS:
             return action.payload;
         default:
             console.log("in default");

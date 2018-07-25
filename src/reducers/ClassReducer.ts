@@ -6,7 +6,7 @@ import { ClassStore } from '../components/common/models/class-store';
 import { HuskyActions } from '../actions';
 
 
-const INITIAL_STATE: ClassStore = {
+const INITIAL_STATE: any = {
     classcode: '',
     classname: '',
     profname: '',

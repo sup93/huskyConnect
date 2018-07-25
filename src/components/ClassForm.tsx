@@ -17,12 +17,17 @@ type Props = {
 }
 
 class ClassForm extends Component<Props> {
+    componentWillMount() {
+        console.log(this.props);
+    }
+
     onButtonPress() {
         const { classcode, classname, profname, time, credits, subject } = this.props;
         this.props.classFormSave({ classcode, classname, profname, time, credits, subject });
     }
 
     render() {
+        console.log("rendering view");
         return (
             <View>
                 <CardSection>
@@ -104,6 +109,8 @@ type State =
 }
 
 const mapStateToProps = ({ classForm }: State) => {
+    console.log(classForm);
+    console.log("Map state to props");
     const {
         classcode,
         classname,
@@ -112,8 +119,16 @@ const mapStateToProps = ({ classForm }: State) => {
         credits,
         subject
     } = classForm;
+    console.log(classForm);
 
-    return classForm;
+    return {
+        classcode,
+        classname,
+        profname,
+        time,
+        credits,
+        subject
+    };
 };
 
 export default connect(mapStateToProps, { inputUpdate, classFormSave })(ClassForm as any);

@@ -2,20 +2,20 @@ import React, { Component } from 'react';
 import { ListView, StyleSheet, ListViewDataSource } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import ListItem from './ListItem';
-import { messageFetch } from '../actions';
+import { conversationFetch } from '../actions';
+import ConversationListItem from './ConversationListItem';
 
 type Props = {
-    messageFetch: () => void,
-    messageList: any
+    conversationFetch: () => void,
+    conversationList: any
 }
 export interface MessagesState {
     dataSource: ListViewDataSource,
 }
 
-class Messages extends Component<Props, MessagesState> {
+class Conversations extends Component<Props, MessagesState> {
     constructor(props: Props) {
-        props.messageFetch();
+        props.conversationFetch();
         console.log("in constructor");
         super(props);
         console.log("in super");
@@ -25,7 +25,7 @@ class Messages extends Component<Props, MessagesState> {
         });
         console.log("ds");
         this.state = {
-            dataSource: ds.cloneWithRows(props.messageList)
+            dataSource: ds.cloneWithRows(props.conversationList)
         };
     }
 
@@ -36,13 +36,13 @@ class Messages extends Component<Props, MessagesState> {
         });
         console.log(nextProps);
         this.setState({
-            dataSource: ds.cloneWithRows(nextProps.messageList)
+            dataSource: ds.cloneWithRows(nextProps.conversationList)
         });
     }
 
-    private renderRow(classObject: any): JSX.Element {
-        console.log('in renderRow of classes');
-        return <ListItem classObject={classObject} />;
+    private renderRow(conversation: any): JSX.Element {
+        console.log('in renderRow of conversations');
+        return <ConversationListItem conversation={conversation} />;
     }
 
     render(): JSX.Element {
@@ -51,7 +51,7 @@ class Messages extends Component<Props, MessagesState> {
             <ListView
                 enableEmptySections
                 dataSource={this.state.dataSource}
-                renderRow={(classObj: any) => this.renderRow(classObj)}
+                renderRow={(conversation: any) => this.renderRow(conversation)}
             />
         )
     }
@@ -59,19 +59,19 @@ class Messages extends Component<Props, MessagesState> {
 
 type State = 
 {
-    messageList: any
+    conversationList: any
 }
 
 //map will pull out classList
-const mapStateToProps = ({ messageList }: State) => {
-    const messages: any = _.map(messageList, (val) => {
+const mapStateToProps = ({ conversationList }: State) => {
+    const conversations: any = _.map(conversationList, (val) => {
         return { ...val };
     });
-    return { messageList: messages };
+    return { conversationList: conversations };
 }
 
 //connect helper
-export default connect(mapStateToProps,{ messageFetch })(Messages as any);
+export default connect(mapStateToProps,{ conversationFetch })(Conversations as any);
 
 const styles = StyleSheet.create({
     errorTextStyle: {

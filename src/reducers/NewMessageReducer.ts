@@ -18,7 +18,7 @@ export default (state = INITIAL_STATE, action: HuskyActions) => {
         case INPUT_UPDATE:
             return { ...state, [action.payload.prop]: action.payload.value };
         case SEND_MESSAGE:
-            return state;
+            return INITIAL_STATE;
         default:
             console.log("in default");
             console.log(state);

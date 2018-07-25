@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { inputUpdate, sendMessage } from '../actions';
+import { inputUpdate, sendNewMessage } from '../actions';
 import { CardSection, Input, Button,Spinner } from './common';
 
 type Props = {
     //could be {} inside loginUser
     inputUpdate: (any: any) => void,
-    sendMessage: (any: any) => void,
+    sendNewMessage: (any: any) => void,
     //could be {} inside loginUser
     loading: boolean,
     email: string,
@@ -33,7 +33,7 @@ class NewMessage extends Component<Props> {
 
     onButtonPress() {
         const { email, message } = this.props;
-        this.props.sendMessage({ email, message });
+        this.props.sendNewMessage({ email, message });
     }
 
     render() {
@@ -58,9 +58,7 @@ class NewMessage extends Component<Props> {
                 <Text style = {styles.errorTextStyle}>
                     {this.props.error}
                 </Text>
-
                 <CardSection>
-
                     {this.renderButton()}
                 </CardSection>
             </View>
@@ -85,7 +83,7 @@ const mapStateToProps = ({ input }: State) => {
     console.log(input);
     const { email, message } = input;
 
-    return input;
+    return { email, message };
 };
 
-export default connect(mapStateToProps, { inputUpdate, sendMessage })(NewMessage as any);
+export default connect(mapStateToProps, { inputUpdate, sendNewMessage })(NewMessage as any);
